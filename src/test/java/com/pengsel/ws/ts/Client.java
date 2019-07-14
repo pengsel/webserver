@@ -1,7 +1,5 @@
-package com.pengsel.ws.server;
+package com.pengsel.ws.ts;
 
-import com.pengsel.ws.ts.DataPack;
-import com.pengsel.ws.ts.Message;
 import com.pengsel.ws.ts.impl.TCPDataPack;
 import com.pengsel.ws.ts.impl.TCPMessage;
 

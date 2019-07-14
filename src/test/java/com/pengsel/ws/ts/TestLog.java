@@ -1,4 +1,4 @@
-package com.pengsel.ws;
+package com.pengsel.ws.ts;
 
 import org.apache.log4j.Logger;
 

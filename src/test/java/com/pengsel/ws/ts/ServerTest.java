@@ -1,6 +1,5 @@
-package com.pengsel.ws.server;
+package com.pengsel.ws.ts;
 
-import com.pengsel.ws.ts.Server;
 import com.pengsel.ws.ts.impl.BaseRouter;
 import com.pengsel.ws.ts.impl.TCPConnManager;
 import com.pengsel.ws.ts.impl.TCPMsgHandler;

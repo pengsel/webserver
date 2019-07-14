@@ -1,7 +1,4 @@
-package com.pengsel.ws;
-
-import java.lang.reflect.Array;
-import java.util.Arrays;
+package com.pengsel.ws.ts;
 
 /**
  * @Author pengsel

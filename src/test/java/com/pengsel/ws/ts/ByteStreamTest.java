@@ -1,7 +1,6 @@
-package com.pengsel.ws;
+package com.pengsel.ws.ts;
 
 import java.io.ByteArrayInputStream;
-import java.util.Arrays;
 
 import static com.pengsel.ws.ts.impl.TCPDataPack.byteArrayToInt;
 import static com.pengsel.ws.ts.impl.TCPDataPack.intToByteArray;

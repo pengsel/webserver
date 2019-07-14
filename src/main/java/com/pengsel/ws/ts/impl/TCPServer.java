@@ -1,7 +1,7 @@
 package com.pengsel.ws.ts.impl;
 
 import com.pengsel.ws.ts.*;
-import com.pengsel.ws.util.Constant;
+import com.pengsel.ws.util.Constants;
 import org.apache.log4j.Logger;
 
 import java.io.IOException;
@@ -63,7 +63,7 @@ public class TCPServer implements Server {
             Socket socket=null;
             try {
                 socket=serverSocket.accept();
-                if (connManager.size()>= Constant.MAX_CONN){
+                if (connManager.size()>= Constants.MAX_CONN){
                     logger.error("Can't afford more conn, closing socket...");
                     socket.close();
                     continue;
@@ -84,7 +84,7 @@ public class TCPServer implements Server {
     }
 
     public void serve() {
-        logger.info("TCP server is running......");
+        logger.info("TCP ts is running......");
         start();
     }
 
