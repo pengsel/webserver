@@ -13,6 +13,8 @@ import java.util.concurrent.LinkedBlockingQueue;
 import java.util.concurrent.ThreadPoolExecutor;
 import java.util.concurrent.TimeUnit;
 
+import static com.pengsel.ws.util.Constants.SCAN_PATH;
+
 /**
  * @Author pengsel
  * @Create 2019/7/11 11:48
@@ -20,6 +22,10 @@ import java.util.concurrent.TimeUnit;
 public class TCPServer implements Server {
 
     private static final Logger logger=Logger.getLogger(TCPServer.class);
+
+    static {
+        Scanner.scanService(SCAN_PATH,"com.pengsel.ws.ts.service");
+    }
 
     private String name;
     private String IPVersion;

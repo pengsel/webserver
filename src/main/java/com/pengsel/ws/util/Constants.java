@@ -14,4 +14,14 @@ public class Constants {
     public static final int WORKER_POOL_SIZE=10;
 
     public static final String WEB_ROOT=System.getProperty("user.dir") + File.separator  + "webroot";
+
+    public static final String SCAN_PATH=System.getProperty("user.dir") +
+            File.separator+"src"+
+            File.separator+"main"+
+            File.separator+"java"+
+            File.separator+"com"+
+            File.separator+"pengsel"+
+            File.separator+"ws"+
+            File.separator+"ts"+
+            File.separator+"service";
 }
