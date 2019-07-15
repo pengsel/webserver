@@ -45,16 +45,16 @@ public class TCPConn implements Conn {
             this.conn=conn;
         }
         public void run() {
-            DataPack dp=new TCPDataPack();
-            byte[] headBuffer=new byte[dp.getHeadLen()];
+
+            byte[] headBuffer=new byte[TCPDataPack.getHeadLen()];
             try {
                 int i=socket.getInputStream().read(headBuffer);
-                if (i!=dp.getHeadLen()){
+                if (i!=TCPDataPack.getHeadLen()){
                     logger.error(String.format(" i = %d, headBuffer=%s",i, Arrays.toString(headBuffer)));
                     throw new Exception();
                 }
 
-                Message message=dp.unpack(headBuffer);
+                Message message=TCPDataPack.unpack(headBuffer);
                 int datalen=message.getDataLen();
                 byte[] dataBuffer=new byte[datalen];
                 i=socket.getInputStream().read(dataBuffer);
@@ -102,8 +102,7 @@ public class TCPConn implements Conn {
 
     public void sendMsg(int msgId, byte[] data) {
         Message message=new TCPMessage(data.length,msgId,data);
-        DataPack dataPack=new TCPDataPack();
-        byte[] bytes=dataPack.pack(message);
+        byte[] bytes=TCPDataPack.pack(message);
         OutputStream outputStream=null;
         try {
             outputStream=socket.getOutputStream();

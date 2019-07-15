@@ -1,24 +1,17 @@
 package com.pengsel.ws.ts.impl;
 
-import com.pengsel.ws.ts.DataPack;
 import com.pengsel.ws.ts.Message;
-
-import java.io.ByteArrayInputStream;
-import java.lang.reflect.Array;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
 
 /**
  * @Author pengsel
  * @Create 2019/7/11 14:08
  */
-public class TCPDataPack implements DataPack {
-    public int getHeadLen() {
+public class TCPDataPack  {
+    public static int getHeadLen() {
         return 8;
     }
 
-    public byte[] pack(Message msg) {
+    public static byte[] pack(Message msg) {
         byte[] bytes=new byte[4+4+msg.getDataLen()];
         for (int i=0;i<bytes.length;i++){
             if (i<4){
@@ -32,7 +25,7 @@ public class TCPDataPack implements DataPack {
         return bytes;
     }
 
-    public Message unpack(byte[] bytes) {
+    public static Message unpack(byte[] bytes) {
         byte[] dataLenBytes=new byte[4];
         byte[] msgIdBytes=new byte[4];
         for (int i=0;i<bytes.length;i++){
