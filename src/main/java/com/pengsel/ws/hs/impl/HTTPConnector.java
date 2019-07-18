@@ -1,6 +1,7 @@
 package com.pengsel.ws.hs.impl;
 
 import com.pengsel.ws.hs.Connecter;
+import org.apache.log4j.Logger;
 
 import java.io.IOException;
 import java.net.InetAddress;
@@ -8,12 +9,15 @@ import java.net.ServerSocket;
 import java.net.Socket;
 
 public class HTTPConnector implements Connecter {
+    private static Logger logger = Logger.getLogger(HTTPConnector.class);
+
     boolean stopped;
     private String scheme = "http";
 
     public String getScheme() {
         return scheme;
     }
+
 
     public void run() {
         ServerSocket serverSocket = null;
