@@ -7,7 +7,5 @@ package com.pengsel.ws.ts;
 public interface Request {
     Conn getConn();
 
-    int getMsgId();
-
-    byte[] getData();
+    String getJson();
 }

@@ -12,6 +12,10 @@ public interface Message {
 
     byte[] getData();
 
+    boolean isJson();
+
+    void setJson(boolean isJson);
+
     void setMsgId(int msgId);
 
     void setData(byte[] bytes);

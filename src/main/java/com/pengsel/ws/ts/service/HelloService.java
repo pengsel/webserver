@@ -7,7 +7,7 @@ import com.pengsel.ws.util.annotation.Service;
  * @Author pengsel
  * @Create 2019/7/15 16:43
  */
-@Service(name = "helloService")
+@Service
 @RequestMapping(path = "/hello")
 public class HelloService {
 

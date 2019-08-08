@@ -19,7 +19,5 @@ public interface Conn {
 
     int getConnId();
 
-    void sendMsg(int msgId,byte[] data);
-
     Executor getThreadPoolExecutor();
 }

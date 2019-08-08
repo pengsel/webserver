@@ -8,6 +8,7 @@ import com.pengsel.ws.ts.Message;
  */
 public class TCPMessage implements Message {
     private int dataLen;
+    private boolean isJson;
     private int msgId;
     private byte[] data;
 
@@ -39,5 +40,13 @@ public class TCPMessage implements Message {
 
     public void setData(byte[] data) {
         this.data = data;
+    }
+
+    public boolean isJson() {
+        return isJson;
+    }
+
+    public void setJson(boolean json) {
+        isJson = json;
     }
 }

@@ -23,12 +23,12 @@ public class Scanner {
     /**
      * 实例表
      */
-    public static Map<String, Object> objectMap = new HashMap<String, Object>();
+    public static Map<String, Object> OBJS = new HashMap<String, Object>();
 
     /**
      * 方法表
      */
-    public static Map<String, Method> methodMap = new HashMap<String, Method>();
+    public static Map<String, Method> APIS = new HashMap<String, Method>();
 
     /**
      * 扫描指定路径下的java文件，生成实例和方法进入实例表和方法表
@@ -56,7 +56,7 @@ public class Scanner {
                     Object object = clazz.newInstance();
                     //根据Service注解注册Service
                     if (clazz.isAnnotationPresent(Service.class)) {
-                        objectMap.put(clazz.getName(), object);
+                        OBJS.put(clazz.getName(), object);
 
                     }
                     String classPath = "";
@@ -70,7 +70,7 @@ public class Scanner {
                     for (Method method : methods) {
                         if (method.isAnnotationPresent(RequestMapping.class)) {
                             RequestMapping methodPath = method.getAnnotation(RequestMapping.class);
-                            methodMap.put(classPath + methodPath.path(), method);
+                            APIS.put(classPath + methodPath.path(), method);
                         }
                     }
                 } catch (Exception e) {
@@ -81,15 +81,15 @@ public class Scanner {
     }
 
     private static void dependencyInject() {
-        for (String entry : objectMap.keySet()) {
-            Object object = objectMap.get(entry);
+        for (String entry : OBJS.keySet()) {
+            Object object = OBJS.get(entry);
             Class clazz = object.getClass();
             Field[] fields = clazz.getDeclaredFields();
             try {
                 for (Field field : fields) {
                     if (field.isAnnotationPresent(Autowired.class)) {
                         field.setAccessible(true);
-                        field.set(object, objectMap.get(field.getType().getName()));
+                        field.set(object, OBJS.get(field.getType().getName()));
                     }
                 }
             } catch (IllegalAccessException e) {

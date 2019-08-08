@@ -12,7 +12,11 @@ public class TCPDataPack  {
     }
 
     public static byte[] pack(Message msg) {
-        byte[] bytes=new byte[4+4+msg.getDataLen()];
+        byte[] bytes=new byte[2+4+4+msg.getDataLen()];
+        if (msg.isJson()) {
+            bytes[0] = (byte) (('{' & 0xFF00) >> 8);
+            bytes[1] = (byte) ('{' & 0xFF);
+        }
         for (int i=0;i<bytes.length;i++){
             if (i<4){
                 bytes[i]=intToByteArray(msg.getDataLen())[i];

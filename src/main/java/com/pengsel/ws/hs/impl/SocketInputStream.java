@@ -1,9 +1,15 @@
 package com.pengsel.ws.hs.impl;
 
+import com.alibaba.fastjson.JSON;
+import com.pengsel.ws.rpc.bean.JsonRPCResponse;
 import org.apache.log4j.Logger;
+import sun.nio.cs.StreamDecoder;
+
 import java.io.EOFException;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.UnsupportedEncodingException;
+import java.util.Stack;
 
 /**
  * Extends InputStream to be more efficient reading lines during HTTP
@@ -17,6 +23,8 @@ public class SocketInputStream extends InputStream {
 
     // -------------------------------------------------------------- Constants
 
+
+    private StreamDecoder sd;
 
     /**
      * CR.
@@ -92,6 +100,11 @@ public class SocketInputStream extends InputStream {
 
         this.is = is;
         buf = new byte[bufferSize];
+        try {
+            sd = StreamDecoder.forInputStreamReader(is, this, (String)null);
+        } catch (UnsupportedEncodingException e) {
+            logger.error(e.toString(),e);
+        }
 
     }
 
@@ -452,6 +465,35 @@ public class SocketInputStream extends InputStream {
     }
 
 
+    public String readJson() throws IOException {
+        try {
+            StringBuilder sb=new StringBuilder();
+            int ci= sd.read();
+            int count=0;
+            if (ci!=-1&& (char)ci=='{'){
+                count++;
+                sb.append(ci);
+            }
+            while (count!=0){
+                ci=sd.read();
+                if (ci!=-1){
+                    sb.append(ci);
+                    if ((char)ci=='{'){
+                        count++;
+                    }else if ((char)ci=='}'){
+                        count--;
+                    }
+                }else {
+                    throw new Exception(" Bad JsonResponse");
+                }
+            }
+
+            return sb.toString();
+        } catch (Exception e){
+            logger.error("Bad response",e);
+            throw new IOException();
+        }
+    }
     /**
      * Read byte.
      */

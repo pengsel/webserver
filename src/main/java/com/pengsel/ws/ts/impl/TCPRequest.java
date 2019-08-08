@@ -11,23 +11,20 @@ import com.pengsel.ws.ts.Request;
 public class TCPRequest implements Request {
 
     private Conn conn;
-    private Message message;
+    private String json;
 
-    public TCPRequest(Conn conn, Message message) {
+    public TCPRequest(Conn conn, String json) {
         this.conn = conn;
-        this.message = message;
+        this.json = json;
     }
 
     public Conn getConn() {
         return conn;
     }
 
-    public int getMsgId() {
-        return message.getMsgId();
+    public String getJson() {
+        return json;
     }
 
-    public byte[] getData() {
-        return message.getData();
-    }
 
 }

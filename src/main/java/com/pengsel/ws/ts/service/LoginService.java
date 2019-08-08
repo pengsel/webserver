@@ -8,11 +8,11 @@ import com.pengsel.ws.util.annotation.Service;
  * @Author pengsel
  * @Create 2019/7/15 17:02
  */
-@Service(name = "loginService")
+@Service()
 @RequestMapping(path = "/login")
 public class LoginService {
 
-    @Autowired(instance = "helloService")
+    @Autowired()
     private HelloService helloService;
 
     @RequestMapping(path = "/login")

@@ -31,16 +31,16 @@ public class TCPServer implements Server {
     private String IPVersion;
     private String IP;
     private int port;
-    private MsgHandler msgHandler;
+    private Handler handler;
     private ConnManager connManager;
     private Executor threadPoolExecutor;
 
-    public TCPServer(String name, String IPVersion, String IP, int port, MsgHandler msgHandler, ConnManager connManager) {
+    public TCPServer(String name, String IPVersion, String IP, int port, Handler handler, ConnManager connManager) {
         this.name = name;
         this.IPVersion = IPVersion;
         this.IP = IP;
         this.port = port;
-        this.msgHandler = msgHandler;
+        this.handler = handler;
         this.connManager = connManager;
         this.threadPoolExecutor=new ThreadPoolExecutor(2,
                 2,0L,
@@ -54,8 +54,6 @@ public class TCPServer implements Server {
     }
 
     public void start() {
-
-        msgHandler.startWorkerPool();
         ServerSocket serverSocket=null;
         try {
             serverSocket=new ServerSocket(port,1, InetAddress.getByName(IP));
@@ -74,7 +72,7 @@ public class TCPServer implements Server {
                     socket.close();
                     continue;
                 }
-                Conn conn=new TCPConn(this,socket,connId,msgHandler);
+                Conn conn=new TCPConn(this,socket,connId, handler);
                 connManager.add(conn);
                 connId++;
                 conn.start();
@@ -95,7 +93,7 @@ public class TCPServer implements Server {
     }
 
     public void addRouter(int msgId, Router router) {
-        msgHandler.addRouter(msgId,router);
+        handler.addRouter(msgId,router);
     }
 
     public ConnManager getConnManager() {
