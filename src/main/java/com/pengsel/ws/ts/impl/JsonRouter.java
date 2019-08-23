@@ -30,8 +30,8 @@ public class JsonRouter implements Router {
             String jsonRequest=socketInputStream.readJson();
             JsonRPCRequest rpcRequest= JSON.parseObject(jsonRequest,JsonRPCRequest.class);
             requestId=rpcRequest.getId();
-            Method method= Scanner.methodMap.get(rpcRequest.getMethod());
-            Object result=method.invoke(Scanner.objectMap.get(method.getDeclaringClass().getName()),rpcRequest.getParams().toArray());
+            Method method= Scanner.APIS.get(rpcRequest.getMethod());
+            Object result=method.invoke(Scanner.OBJS.get(method.getDeclaringClass().getName()),rpcRequest.getParams().toArray());
 
             JsonRPCResponse response=new JsonRPCResponse();
             response.setResult(result);
