@@ -43,10 +43,9 @@ public class JsonRpc {
      * @param params
      * @return
      */
-    public static Object call(String method, List<Object>params) {
+    public static Object call(String method, List<Object>params, Socket socket) {
         JsonRPCRequest request=new JsonRPCRequest(method,params);
         String json= JSON.toJSONString(request);
-        Socket socket=tcpConns.poll();
         InputStream inputStream=null;
         OutputStream outputStream=null;
         try {

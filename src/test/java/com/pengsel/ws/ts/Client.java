@@ -1,6 +1,6 @@
 package com.pengsel.ws.ts;
 
-import com.pengsel.ws.rpc.JsonRpcClient;
+//import com.pengsel.ws.rpc.JsonRpcClient;
 import com.pengsel.ws.ts.impl.TCPDataPack;
 import com.pengsel.ws.ts.impl.TCPMessage;
 
@@ -22,8 +22,8 @@ public class Client {
             socket=new Socket("127.0.0.1",7777);
             outputStream=socket.getOutputStream();
             inputStream=socket.getInputStream();
-            JsonRpcClient client=new JsonRpcClient();
-            client.call("/hello/time",null);
+//            JsonRpcClient client=new JsonRpcClient();
+//            client.call("/hello/time",null);
             byte[] buffer=new byte[2048];
             int i=inputStream.read(buffer);
             if (i!=-1) {

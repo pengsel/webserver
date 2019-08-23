@@ -9,6 +9,12 @@ import java.io.File;
 public class Constants {
 
     public static final String HOST="127.0.0.1";
+
+    public static final String RIGISTER_CENTER_IP="127.0.0.1";
+
+    public static final int REGISTER_CENTER_PORT=6666;
+
+
     public static final int PORT=7777;
     public static final int MAX_CONN=10;
     public static final int WORKER_POOL_SIZE=10;

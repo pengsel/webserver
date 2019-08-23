@@ -1,5 +1,6 @@
 package com.pengsel.ws.hs.impl;
 
+import com.pengsel.ws.hs.Dispatcher;
 import com.pengsel.ws.hs.Processor;
 import com.pengsel.ws.util.RequestUtil;
 
@@ -7,16 +8,21 @@ import javax.servlet.ServletException;
 import javax.servlet.http.Cookie;
 import java.io.IOException;
 import java.io.OutputStream;
+import java.net.InetSocketAddress;
 import java.net.Socket;
+import java.nio.channels.SelectionKey;
+import java.nio.channels.SocketChannel;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
-public class HTTPProcessor implements Processor {
-    public HTTPProcessor(HTTPConnector connector) {
-        this.connector = connector;
+public class HTTPProcessor implements Processor ,Runnable{
+    public HTTPProcessor(SelectionKey key, Dispatcher dispatcher) {
+        this.selectionKey = key;
+        this.dispatcher=dispatcher;
     }
-    /**
-     * The HTTPConnector with which this processor is associated.
-     */
-    private HTTPConnector connector = null;
+
+    private Dispatcher dispatcher;
+    private SelectionKey selectionKey;
     private HTTPRequest request;
 
     private HTTPRequestLine requestLine = new HTTPRequestLine();
@@ -25,7 +31,9 @@ public class HTTPProcessor implements Processor {
     protected String method = null;
     protected String queryString = null;
 
-    public void process(Socket socket) {
+    public void process() {
+        SocketChannel socketChannel=(SocketChannel) selectionKey.channel();
+        Socket socket =socketChannel.socket();
         SocketInputStream input = null;
         OutputStream output = null;
         try {
@@ -44,24 +52,29 @@ public class HTTPProcessor implements Processor {
             parseRequest(input, output);
             parseHeaders(input);
 
-            //check if this is a request for a servlet or a static resource
-            //a request for a servlet begins with "/servlet/"
-//            if (request.getRequestURI().startsWith("/servlet/")) {
-//                ServletProcessor processor = new ServletProcessor();
-//                processor.process(request, response);
-//            }
-//            else {
-//                StaticResourceProcessor processor = new StaticResourceProcessor();
-//                processor.process(request, response);
-//            }
-//            todo:将请求分发给处理器
-            System.out.println(request.getParameter("name"));
-            System.out.println(requestLine.toString());
-            response.write("hello http server".getBytes());
+            String uri = request.getRequestURI();
+            String regEx = ".*?(jpg|js|css|gif|png|ico|html)$";
+            Pattern pattern = Pattern.compile(regEx);
+            Matcher matcher = pattern.matcher(uri);
+            if (matcher.matches()) {
+               response.sendStaticResource();
+
+            } else {
+
+                InetSocketAddress address= dispatcher.getAddr(request.getRequestURI(),null);
+                SocketChannel proxySocketChannel=SocketChannel.open(address);
+                SelectionKey redirectKey=proxySocketChannel.register(selectionKey.selector(),SelectionKey.OP_WRITE);
+                redirectKey.attach(new RPCProcessor(selectionKey,request,response));
+            }
 
             // Close the socket
-            socket.close();
+            socketChannel.close();
             // no shutdown for this application
+
+            //唤醒selector，让它重新关注该通道的OP_READ信号
+            selectionKey.interestOps (selectionKey.interestOps() | SelectionKey.OP_READ);
+            selectionKey.selector().wakeup();
+            selectionKey.attach(null);
         }
         catch (Exception e) {
             e.printStackTrace();
@@ -294,5 +307,9 @@ public class HTTPProcessor implements Processor {
         // Return the normalized path that we have completed
         return (normalized);
 
+    }
+
+    public void run() {
+        process();
     }
 }

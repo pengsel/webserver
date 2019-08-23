@@ -1,8 +1,8 @@
 package com.pengsel.ws.hs;
 
-import java.net.Socket;
+import java.io.IOException;
 
-public interface Processor {
+public interface Processor extends Runnable {
 
-    void process(Socket socket);
+    void process() throws IOException;
 }
