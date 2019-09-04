@@ -21,6 +21,7 @@ WebServer采用HTTPServer+TCPServer的框架，各个服务以TCPServer实现，
 
 HTTPServer主要在com.pengsel.hs包实现。它的主要作用是解析出HTTPRequest，并将请求以JsonRPC的方式转发至TCPServer，TCPServer返回处理结果后，HTTPServer组装HTTPResponse返回给用户。
 
+![](asset/HTTPServer时序.png)
 ### 连接器HTTPConnector
 
 监听80端口上的请求，有请求时将其封装成Runnable对象交给线程池执行。
@@ -64,7 +65,8 @@ RPCProcessor的作用是将HTTP请求转化成JsonRPC请求，向指定的TCPSer
 
 分发器在初始化的时候向注册中心发送请求，同步注册到注册中心的服务。
 
-
+## TCP服务器
+![](asset/TCPServer时序.png)
 
 
 
